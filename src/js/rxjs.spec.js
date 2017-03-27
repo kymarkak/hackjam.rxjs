@@ -1,5 +1,9 @@
-import {expect} from "chai";
-import {Observable} from "./rxjs";
+import {expect} from 'chai';
+import {Observable} from './rxjs';
+
+const observer = (next, error, complete) => ({
+  next, error, complete
+});
 
 describe('Rxjs', () => {
 
@@ -12,7 +16,7 @@ describe('Rxjs', () => {
         let result = [];
         const actual = [1, 2, 3, 4, 5];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -20,7 +24,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
 
       it('should emit an object, array and function', (done) => {
@@ -32,7 +36,7 @@ describe('Rxjs', () => {
           return 'Hello'
         }];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -43,7 +47,7 @@ describe('Rxjs', () => {
               expect(actual[2]()).deep.equal(result[2]());
               done();
             }
-          );
+          ));
       });
 
     });
@@ -55,9 +59,9 @@ describe('Rxjs', () => {
         let result = [];
         const actual = [0, 1, 2];
         const unsubscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val]
-          );
+          ));
 
         setTimeout(() => {
           unsubscribe();
@@ -68,7 +72,6 @@ describe('Rxjs', () => {
 
     });
 
-
     describe('fromArray :', () => {
 
       it('should convert an array to an Observable', (done) => {
@@ -76,7 +79,7 @@ describe('Rxjs', () => {
         let result = [];
         const actual = [1, 2, 3, 4, 5];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -84,7 +87,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
 
     });
@@ -97,7 +100,7 @@ describe('Rxjs', () => {
         const source = Observable.fromPromise(promise);
         let result;
         const subscribe = source
-          .subscribe(
+          .subscribe(observer(
             val => {
               result = val;
             },
@@ -108,7 +111,7 @@ describe('Rxjs', () => {
               expect(actual).equals(result);
               done();
             }
-          );
+          ));
       });
     });
 
@@ -119,7 +122,7 @@ describe('Rxjs', () => {
         let result = [];
         const actual = [1, 2, 3, 4, 5];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => {
               console.log('value', val);
               result = [...result, val];
@@ -131,7 +134,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
 
       it('should convert an promise to an Observable', (done) => {
@@ -140,7 +143,7 @@ describe('Rxjs', () => {
         const source$ = Observable.from(promise);
         let result;
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => {
               result = val;
             },
@@ -151,7 +154,7 @@ describe('Rxjs', () => {
               expect(actual).equals(result);
               done();
             }
-          );
+          ));
       });
 
       it('should convert a string to an Observable', (done) => {
@@ -160,7 +163,7 @@ describe('Rxjs', () => {
         const source$ = Observable.from(value);
         let result = [];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => {
               result = [...result, val];
             },
@@ -171,7 +174,7 @@ describe('Rxjs', () => {
               expect(actual.length).equals(result.length);
               done();
             }
-          );
+          ));
       });
 
       it('should convert a colllection to an Observable', (done) => {
@@ -182,7 +185,7 @@ describe('Rxjs', () => {
         const actual = [[1, 'Hi'], [2, 'Bye']];
         let result = [];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => {
               result = [...result, val];
             },
@@ -195,7 +198,7 @@ describe('Rxjs', () => {
               expect(actual[1]).deep.equal(result[1]);
               done();
             }
-          );
+          ));
       });
     });
 
@@ -206,7 +209,7 @@ describe('Rxjs', () => {
         let result = [];
         const actual = [11, 12, 13, 14, 15];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -214,7 +217,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
 
       it('should map to a single property', (done) => {
@@ -223,7 +226,7 @@ describe('Rxjs', () => {
         let result = [];
         const actual = ["Joe", "Frank", "Ryan"];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -231,7 +234,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
     });
 
@@ -242,7 +245,7 @@ describe('Rxjs', () => {
         let result = [];
         const actual = ['a', 'a', 'a', 'a', 'a'];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -250,7 +253,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
     });
 
@@ -264,7 +267,7 @@ describe('Rxjs', () => {
           .do(val => console.log(`Before mapTo: ${val}`))
           .mapTo('a')
           .do(val => console.log(`After mapTo: ${val}`))
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -272,7 +275,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
     });
 
@@ -283,7 +286,7 @@ describe('Rxjs', () => {
         let result = [];
         const actual = [2, 4];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -291,7 +294,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
 
       it('should filter objects based on a property', (done) => {
@@ -300,7 +303,7 @@ describe('Rxjs', () => {
         let result = [];
         const actual = ["Joe", "Ryan"];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -308,7 +311,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
     });
 
@@ -320,7 +323,7 @@ describe('Rxjs', () => {
         const actual = [0, 1, 2, 3, 4, 5];
         const subscribe = source$
           .startWith(0)
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -328,7 +331,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
 
       it('should start with multiple values', (done) => {
@@ -337,7 +340,7 @@ describe('Rxjs', () => {
         const actual = [-1, 0, 1, 2, 3, 4, 5];
         const subscribe = source$
           .startWith(-1, 0)
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -345,7 +348,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
     });
 
@@ -357,7 +360,7 @@ describe('Rxjs', () => {
         let result = [];
         const actual = [10, 20];
         const subscribe = sourceOne$.concat(sourceTwo$)
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -365,7 +368,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
 
       it('Should be a static method on Observable', (done) => {
@@ -375,7 +378,7 @@ describe('Rxjs', () => {
         const actual = [10, 20];
         const subscribe = Observable
           .concat(sourceOne$, sourceTwo$)
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -383,7 +386,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
     });
 
@@ -394,7 +397,7 @@ describe('Rxjs', () => {
         const actual = 1;
         let result;
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = val,
             () => {
             },
@@ -402,7 +405,7 @@ describe('Rxjs', () => {
               expect(actual).equals(result);
               done();
             }
-          );
+          ));
       });
 
       it('should return the first 2 values from a stream ', (done) => {
@@ -410,7 +413,7 @@ describe('Rxjs', () => {
         const actual = [1, 2];
         let result = [];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = [...result, val],
             () => {
             },
@@ -418,7 +421,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(result);
               done();
             }
-          );
+          ));
       });
     });
 
@@ -429,7 +432,7 @@ describe('Rxjs', () => {
         const actual = 1;
         let result;
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = val,
             () => {
             },
@@ -437,7 +440,7 @@ describe('Rxjs', () => {
               expect(actual).equals(result);
               done();
             }
-          );
+          ));
       });
 
       it('should return first value to pass predicate', (done) => {
@@ -445,7 +448,7 @@ describe('Rxjs', () => {
         const actual = 5;
         let result;
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => result = val,
             () => {
             },
@@ -453,7 +456,7 @@ describe('Rxjs', () => {
               expect(actual).equals(result);
               done();
             }
-          );
+          ));
       });
     });
 
@@ -464,7 +467,7 @@ describe('Rxjs', () => {
         const actual = [4, 5];
         let results = [];
         const subscribe = source$
-          .subscribe(
+          .subscribe(observer(
             val => results = [...results, val],
             () => {
             },
@@ -472,7 +475,7 @@ describe('Rxjs', () => {
               expect(actual).deep.equals(results);
               done();
             }
-          );
+          ));
       });
     });
   });
