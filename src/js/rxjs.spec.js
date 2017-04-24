@@ -60,7 +60,9 @@ describe('Rxjs', () => {
         const actual = [0, 1, 2];
         const unsubscribe = source$
           .subscribe(observer(
-            val => result = [...result, val]
+            val => result = [...result, val],
+            err => {},
+            complete => {}
           ));
 
         setTimeout(() => {
